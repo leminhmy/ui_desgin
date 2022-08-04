@@ -45,8 +45,8 @@ class ChartStepScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: List.generate(indexColumn%2==0?3:2, (indexRow) {
-                              int numberStepTwo = (indexRow+(indexColumn * 2));
-                              int numberStepThree = 1+(indexRow+(indexColumn * 2));
+                              int numberStepTwo = indexColumn~/2;
+                              int numberStepThree = (3*indexColumn+indexRow);
                               return Container(
                                 width: size.height * 0.1,
                                 height: size.height * 0.1,
@@ -55,7 +55,7 @@ class ChartStepScreen extends StatelessWidget {
                                     color: Colors.green,
                                     shape: BoxShape.circle
                                 ),
-                                child: Text('${listNumber[indexColumn%2==0?numberStepTwo:numberStepThree]}',style: TextStyle(
+                                child: Text('${listNumber[numberStepThree-numberStepTwo]}',style: TextStyle(
                                   color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
                                 )),
                               );
