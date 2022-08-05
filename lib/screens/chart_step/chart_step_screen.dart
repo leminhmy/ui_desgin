@@ -4,13 +4,53 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:story_ui/screens/home/home_screen.dart';
 
-class ChartStepScreen extends StatelessWidget {
+import '../../widget/text_container_lozenge.dart';
+import '../../widget/text_shape_circle.dart';
+
+class ChartStepScreen extends StatefulWidget {
   const ChartStepScreen({Key? key}) : super(key: key);
 
   @override
+  State<ChartStepScreen> createState() => _ChartStepScreenState();
+}
+
+class _ChartStepScreenState extends State<ChartStepScreen> {
+  int lengthList = 9;
+  late List<String> listNumber;
+
+
+  @override
+  void initState(){
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List<int> listNumber = List.generate(13, (index) => index);
-    print(listNumber);
+    int getNumber(){
+      int maxLenght = listNumber.length;
+      double x1 = (maxLenght)/5;
+      double x2 = (maxLenght-3)/5;
+
+      int valueFinal = x1.ceil()+x2.ceil();
+
+      return valueFinal;
+    }
+    listNumber = List.generate(lengthList, (index) => index.toString());
+    /*listNumber = [
+      "1",
+      "2",
+      "3",
+      "?",
+      "5",
+      "6",
+      "?",
+      "7",
+      "?",
+      "9",
+      "10",
+      "?",
+      "12",
+    ];*/
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -20,14 +60,43 @@ class ChartStepScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(height: 100,),
+            SizedBox(height: size.height * 0.1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: (){
+                      lengthList--;
+
+                      setState((){
+                      });
+                    }, child: Text('-',style: TextStyle(
+                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                  )),),
+                  Text('$lengthList',style: TextStyle(
+                      color: Colors.black,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                  )),
+                  ElevatedButton(
+                    onPressed: (){
+                      lengthList++;
+
+                      setState((){
+                      });
+                    }, child: Text('+',style: TextStyle(
+                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                  )),),
+                ],
+              ),
+            ),
+            SizedBox(height: size.height * 0.05,),
+            //Line Paint
             SizedBox(
-              height: size.height * 0.65,
+              height: size.height,
               width: size.width,
               child: CustomPaint(
                 size: Size(size.width,size.height),
                 painter: /*SliderPaintCustom(),*/DashedPathPainter(
-                    originalPath: pathCustom(size),
+                    originalPath: pathCustom(size,getNumber(),lengthList),
                     dashGapLength: 15,
                     strokeWidth: 5,
                     dashLength: 15,
@@ -40,46 +109,30 @@ class ChartStepScreen extends StatelessWidget {
                       right: 0,
                       left: 0,
                       child: Column(
-                        children: List.generate(5, (indexColumn) => Padding(
+                        children: List.generate(getNumber(), (indexColumn) => Padding(
                           padding: EdgeInsets.only(left: size.height * 0.02,right: size.height * 0.02,bottom: size.height * 0.04),
                           child: indexColumn%2==0?Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: List.generate(3, (indexRow) {
                               int numberStepTwo = indexColumn~/2;
                               int numberStepThree = (3*indexColumn+indexRow);
-                              return  Container(
-                                width: size.height * 0.1,
-                                height: size.height * 0.1,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    shape: BoxShape.circle
-                                ),
-                                child: Text('${listNumber[numberStepThree-numberStepTwo]}',style: TextStyle(
-                                    color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-                                )),
-                              );
+                              bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
+                              bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
+                              return checkLength?
+                                  (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))
+                                  :Container();
                             },
                           ),
                         ):Stack(
+                            alignment: Alignment.center,
                             children: List.generate(2, (indexRow) {
                               int numberStepTwo = indexColumn~/2;
                               int numberStepThree = (3*indexColumn+indexRow);
-                              return  Align(
+                              bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
+                              bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
+                              return checkLength?Align(
                                 alignment: Alignment(indexRow==0?0.5:-0.5,0),
-                                child: Container(
-                                  width: size.height * 0.1,
-                                  height: size.height * 0.1,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle
-                                  ),
-                                  child: Text('${listNumber[numberStepThree-numberStepTwo]}',style: TextStyle(
-                                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-                                  )),
-                                ),
-                              );
+                                child: (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))):Container();
                             },
                             ),
                           ),))
@@ -101,40 +154,54 @@ class ChartStepScreen extends StatelessWidget {
     );
   }
 
-  Path pathCustom(Size size){
+  Path pathCustom(Size size,int lengthRow,int lengthList){
     Path path0 = Path();
     path0.moveTo(size.width * 0.2,0);
     path0.lineTo(size.width * 0.2, 0);
     path0.lineTo(size.width * 0.7, 0);
-    path0.moveTo(size.width*0.7,0);
-    path0.quadraticBezierTo(size.width*0.7,0,size.width*0.8,0);
-    path0.cubicTo(size.width,0,size.width,size.height*0.14,size.width*0.8,size.height*0.14);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.14,size.width*0.8,size.height*0.14);
     //line 1
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.14,size.width*0.2,size.height*0.14);
-    //line 2
-    path0.moveTo(size.width*0.2,size.height*0.14);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.14,size.width*0.2,size.height*0.14);
-    path0.cubicTo(0,size.height*0.14,0,size.height*0.28,size.width*0.2,size.height*0.28);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.28,size.width*0.3,size.height*0.28);
 
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.28,size.width*0.8,size.height*0.28);
+    for(int i = 0; i<(lengthRow%2==0?(lengthRow/2):(lengthRow~/2));i++){
+      path0.moveTo(size.width*0.8 ,size.height*0.28*i);
+      path0.quadraticBezierTo(size.width*0.7,size.height*0.28*i,size.width*0.8,size.height*0.28*i);
+      path0.cubicTo(size.width,size.height*0.28*i,size.width,size.height*0.14*(i+i+1),size.width*0.8,size.height*0.14*(i+i+1));
+      path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.8,size.height*0.14*(i+i+1));
+
+      path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+
+    }
+    for(int i = 0; i<(lengthRow%2==0?(lengthRow/2-1):(lengthRow/2).ceil()-1);i++){
+      path0.moveTo(size.width*0.2,size.height*0.14*(i+i+1));
+      path0.quadraticBezierTo(size.width*0.2,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+      path0.cubicTo(0,size.height*0.14*(i+i+1),0,size.height*0.28*(i+1),size.width*0.2,size.height*0.28*(i+1));
+      path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.3,size.height*0.28*(i+1));
+
+      path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.8,size.height*0.28*(i+1));
+
+    }
+
+
+
+    //line 2
+
     //line 3
-    path0.moveTo(size.width*0.8,size.height*0.28);
+    /*path0.moveTo(size.width*0.8,size.height*0.28);
     path0.quadraticBezierTo(size.width*0.8,size.height*0.28,size.width*0.8,size.height*0.28);
     path0.cubicTo(size.width,size.height*0.28,size.width,size.height*0.42,size.width*0.8,size.height*0.42);
     path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.8,size.height*0.42);
 
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.2,size.height*0.42);
-    //line 3
-    path0.moveTo(size.width*0.2,size.height*0.42);
+    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.2,size.height*0.42);*/
+    //line 4
+  /*  path0.moveTo(size.width*0.2,size.height*0.42);
     path0.quadraticBezierTo(size.width*0.2,size.height*0.42,size.width*0.2,size.height*0.42);
     path0.cubicTo(0,size.height*0.42,0,size.height*0.56,size.width*0.2,size.height*0.56);
     path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.3,size.height*0.56);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.8,size.height*0.56);
+    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.8,size.height*0.56);*/
     return path0;
   }
 }
+
+
 
 class SliderPaintCustom extends CustomPainter{
 
