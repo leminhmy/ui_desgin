@@ -42,12 +42,12 @@ class ChartStepScreen extends StatelessWidget {
                       child: Column(
                         children: List.generate(5, (indexColumn) => Padding(
                           padding: EdgeInsets.only(left: size.height * 0.02,right: size.height * 0.02,bottom: size.height * 0.04),
-                          child: Row(
+                          child: indexColumn%2==0?Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(indexColumn%2==0?3:2, (indexRow) {
+                            children: List.generate(3, (indexRow) {
                               int numberStepTwo = indexColumn~/2;
                               int numberStepThree = (3*indexColumn+indexRow);
-                              return Container(
+                              return  Container(
                                 width: size.height * 0.1,
                                 height: size.height * 0.1,
                                 alignment: Alignment.center,
@@ -56,13 +56,33 @@ class ChartStepScreen extends StatelessWidget {
                                     shape: BoxShape.circle
                                 ),
                                 child: Text('${listNumber[numberStepThree-numberStepTwo]}',style: TextStyle(
-                                  color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                                    color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
                                 )),
                               );
                             },
-                            ),
                           ),
-                        ),)
+                        ):Stack(
+                            children: List.generate(2, (indexRow) {
+                              int numberStepTwo = indexColumn~/2;
+                              int numberStepThree = (3*indexColumn+indexRow);
+                              return  Align(
+                                alignment: Alignment(indexRow==0?0.5:-0.5,0),
+                                child: Container(
+                                  width: size.height * 0.1,
+                                  height: size.height * 0.1,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      shape: BoxShape.circle
+                                  ),
+                                  child: Text('${listNumber[numberStepThree-numberStepTwo]}',style: TextStyle(
+                                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                                  )),
+                                ),
+                              );
+                            },
+                            ),
+                          ),))
                       ),
                     )
                   ],

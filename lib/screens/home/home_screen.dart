@@ -9,6 +9,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double testValueToInt = 2.5;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Story Ui"),
@@ -18,17 +20,29 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           StoryAnimation(),
-          SizedBox(height: size.height * 0.1,),
           ElevatedButton(
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (_)=>const ChartStepScreen()));
             }, child: Text('ChartStep',style: TextStyle(
               color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-          )),)
+          )),),
+          Container(
+            width: size.height * 0.1,
+            height: size.height * 0.1,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle
+            ),
+            child: Text('0',style: TextStyle(
+                color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+            )),
+          )
         ],
       ),
     );
   }
+
 }
 
 class StoryAnimation extends StatefulWidget {
