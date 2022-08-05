@@ -16,7 +16,7 @@ class TextShapeCircle extends StatelessWidget {
       height: size.height * 0.1,
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: Colors.green,
+          color: Colors.green.withOpacity(0.5),
           shape: BoxShape.circle
       ),
       child: Text(text,style: TextStyle(

@@ -53,121 +53,152 @@ class _ChartStepScreenState extends State<ChartStepScreen> {
     ];*/
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text('ChartStep'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: size.height * 0.1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                    onPressed: (){
-                      lengthList--;
-
-                      setState((){
-                      });
-                    }, child: Text('-',style: TextStyle(
-                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-                  )),),
-                  Text('$lengthList',style: TextStyle(
-                      color: Colors.black,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-                  )),
-                  ElevatedButton(
-                    onPressed: (){
-                      lengthList++;
-
-                      setState((){
-                      });
-                    }, child: Text('+',style: TextStyle(
-                      color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-                  )),),
-                ],
-              ),
-            ),
-            SizedBox(height: size.height * 0.05,),
-            //Line Paint
-            SizedBox(
-              height: size.height,
-              width: size.width,
-              child: CustomPaint(
-                size: Size(size.width,size.height),
-                painter: /*SliderPaintCustom(),*/DashedPathPainter(
-                    originalPath: pathCustom(size,getNumber(),lengthList),
-                    dashGapLength: 15,
-                    strokeWidth: 5,
-                    dashLength: 15,
-                    pathColor: Colors.red),
-                child: Stack(
-                  clipBehavior: Clip.none,
+      body: Container(
+        height: size.height,
+        width: size.width,
+        decoration: const BoxDecoration(
+          color: Colors.black12,
+            image: DecorationImage(
+              opacity: 0.5,
+              image: AssetImage('assets/images/image_04.jpg'),
+              fit: BoxFit.cover,
+            )
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: size.height * 0.1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Positioned(
-                      top: -size.height * 0.05,
-                      right: 0,
-                      left: 0,
-                      child: Column(
-                        children: List.generate(getNumber(), (indexColumn) => Padding(
-                          padding: EdgeInsets.only(left: size.height * 0.02,right: size.height * 0.02,bottom: size.height * 0.04),
-                          child: indexColumn%2==0?Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: List.generate(3, (indexRow) {
-                              int numberStepTwo = indexColumn~/2;
-                              int numberStepThree = (3*indexColumn+indexRow);
-                              bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
-                              bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
-                              return checkLength?
-                                  (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))
-                                  :Container();
-                            },
-                          ),
-                        ):Stack(
-                            alignment: Alignment.center,
-                            children: List.generate(2, (indexRow) {
-                              int numberStepTwo = indexColumn~/2;
-                              int numberStepThree = (3*indexColumn+indexRow);
-                              bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
-                              bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
-                              return checkLength?Align(
-                                alignment: Alignment(indexRow==0?0.5:-0.5,0),
-                                child: (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))):Container();
-                            },
-                            ),
-                          ),))
-                      ),
-                    )
+                    ElevatedButton(
+                      onPressed: (){
+                        lengthList--;
+
+                        setState((){
+                        });
+                      }, child: Text('-',style: TextStyle(
+                        color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                    )),),
+                    Text('$lengthList',style: TextStyle(
+                        color: Colors.black,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                    )),
+                    ElevatedButton(
+                      onPressed: (){
+                        lengthList++;
+
+                        setState((){
+                        });
+                      }, child: Text('+',style: TextStyle(
+                        color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+                    )),),
                   ],
                 ),
               ),
-            ),
-            ElevatedButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (_)=>const HomeScreen()));
-              }, child: Text('Story UI',style: TextStyle(
-                color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
-            )),)
-          ],
+              ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (_)=>const HomeScreen()));
+                }, child: Text('Story UI',style: TextStyle(
+                  color: Colors.white,fontSize: size.height * 0.03,fontWeight: FontWeight.bold
+              )),),
+              SizedBox(height: size.height * 0.05,),
+              //Line Paint
+              Container(
+                color: Colors.white38,
+                height: (size.height*0.14)*(getNumber()-1),
+                width: size.width,
+                child: CustomPaint(
+                  size: Size(size.width,size.height),
+                  painter: /*SliderPaintCustom(),*/DashedPathPainter(
+                      originalPath: pathCustom(size,getNumber(),lengthList),
+                      dashGapLength: 15,
+                      strokeWidth: 5,
+                      dashLength: 15,
+                      pathColor: Colors.red),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Positioned(
+                        top: -size.height * 0.05,
+                        right: 0,
+                        left: 0,
+                        child: Column(
+                          children: List.generate(getNumber(), (indexColumn) => Padding(
+                            padding: EdgeInsets.only(left: size.height * 0.02,right: size.height * 0.02,bottom: size.height * 0.04),
+                            child: indexColumn%2==0?Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: List.generate(3, (indexRow) {
+                                int numberStepTwo = indexColumn~/2;
+                                int numberStepThree = (3*indexColumn+indexRow);
+                                bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
+                                bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
+                                return checkLength?
+                                    (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))
+                                    :Container();
+                              },
+                            ),
+                          ):Stack(
+                              alignment: Alignment.center,
+                              children: List.generate(2, (indexRow) {
+                                int numberStepTwo = indexColumn~/2;
+                                int numberStepThree = (3*indexColumn+indexRow);
+                                bool checkLength = numberStepThree-numberStepTwo<listNumber.length;
+                                bool checkQuestion = checkLength?listNumber[numberStepThree-numberStepTwo].toString()=="?":false;
+                                return checkLength?Align(
+                                  alignment: Alignment(indexRow==0?0.55:-0.55,0),
+                                  child: (checkQuestion?TextContainerLozenge(text: listNumber[numberStepThree-numberStepTwo].toString()):TextShapeCircle(text: listNumber[numberStepThree-numberStepTwo].toString(),))):Container();
+                              },
+                              ),
+                            ),))
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height * 0.1,),
+
+            ],
+          ),
         ),
       ),
     );
   }
 
   Path pathCustom(Size size,int lengthRow,int lengthList){
+
     Path path0 = Path();
     path0.moveTo(size.width * 0.2,0);
     path0.lineTo(size.width * 0.2, 0);
-    path0.lineTo(size.width * 0.7, 0);
+    path0.lineTo(size.width * 0.8, 0);
     //line 1
 
     for(int i = 0; i<(lengthRow%2==0?(lengthRow/2):(lengthRow~/2));i++){
       path0.moveTo(size.width*0.8 ,size.height*0.28*i);
-      path0.quadraticBezierTo(size.width*0.7,size.height*0.28*i,size.width*0.8,size.height*0.28*i);
+      path0.quadraticBezierTo(size.width*0.8,size.height*0.28*i,size.width*0.8,size.height*0.28*i);
       path0.cubicTo(size.width,size.height*0.28*i,size.width,size.height*0.14*(i+i+1),size.width*0.8,size.height*0.14*(i+i+1));
       path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.8,size.height*0.14*(i+i+1));
 
-      path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+      //fix line following lengthList
+      if(lengthRow%2==0){
+        if(i==(lengthRow%2==0?(lengthRow/2):(lengthRow~/2))-1){
+          int valueMaxLine = 5*(lengthRow~/2);
+          if(valueMaxLine==lengthList){
+            path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+          }else{
+            path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.65,size.height*0.14*(i+i+1));
+          }
+        }else{
+          path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+        }
+      }else{
+        path0.quadraticBezierTo(size.width*0.8,size.height*0.14*(i+i+1),size.width*0.2,size.height*0.14*(i+i+1));
+      }
 
     }
     for(int i = 0; i<(lengthRow%2==0?(lengthRow/2-1):(lengthRow/2).ceil()-1);i++){
@@ -176,87 +207,28 @@ class _ChartStepScreenState extends State<ChartStepScreen> {
       path0.cubicTo(0,size.height*0.14*(i+i+1),0,size.height*0.28*(i+1),size.width*0.2,size.height*0.28*(i+1));
       path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.3,size.height*0.28*(i+1));
 
-      path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.8,size.height*0.28*(i+1));
+      //fix line following lengthList
+      if(lengthRow%2==1){
+        if(i==(lengthRow%2==0?(lengthRow/2-1):(lengthRow/2).ceil()-1)-1){
+          int valueMaxLine = 5*(lengthRow~/2);
+          if(valueMaxLine+1==lengthList){
+            path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.2,size.height*0.28*(i+1));
+          }else if(valueMaxLine+2==lengthList){
+            path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.5,size.height*0.28*(i+1));
+          }
+          else if(valueMaxLine+3==lengthList){
+            path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.8,size.height*0.28*(i+1));
+          }
+        }else{
+          path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.8,size.height*0.28*(i+1));
+        }
+      }else{
+        path0.quadraticBezierTo(size.width*0.2,size.height*0.28*(i+1),size.width*0.8,size.height*0.28*(i+1));
 
+      }
     }
 
-
-
-    //line 2
-
-    //line 3
-    /*path0.moveTo(size.width*0.8,size.height*0.28);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.28,size.width*0.8,size.height*0.28);
-    path0.cubicTo(size.width,size.height*0.28,size.width,size.height*0.42,size.width*0.8,size.height*0.42);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.8,size.height*0.42);
-
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.2,size.height*0.42);*/
-    //line 4
-  /*  path0.moveTo(size.width*0.2,size.height*0.42);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.42,size.width*0.2,size.height*0.42);
-    path0.cubicTo(0,size.height*0.42,0,size.height*0.56,size.width*0.2,size.height*0.56);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.3,size.height*0.56);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.8,size.height*0.56);*/
     return path0;
-  }
-}
-
-
-
-class SliderPaintCustom extends CustomPainter{
-
-  @override
-  void paint(Canvas canvas, Size size) {
-
-    Paint paint = Paint()
-      ..color = Color(0xffeb3ab1)
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.round
-
-
-      ..strokeWidth = 7;
-
-    Path path0 = Path();
-    path0.moveTo(size.width * 0.2,0);
-    path0.lineTo(size.width * 0.2, 0);
-    path0.lineTo(size.width * 0.7, 0);
-    path0.moveTo(size.width*0.7,0);
-    path0.quadraticBezierTo(size.width*0.7,0,size.width*0.8,0);
-    path0.cubicTo(size.width,0,size.width,size.height*0.14,size.width*0.8,size.height*0.14);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.14,size.width*0.8,size.height*0.14);
-    //line 1
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.14,size.width*0.2,size.height*0.14);
-    //line 2
-    path0.moveTo(size.width*0.2,size.height*0.14);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.14,size.width*0.2,size.height*0.14);
-    path0.cubicTo(0,size.height*0.14,0,size.height*0.28,size.width*0.2,size.height*0.28);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.28,size.width*0.3,size.height*0.28);
-
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.28,size.width*0.8,size.height*0.28);
-    //line 3
-    path0.moveTo(size.width*0.8,size.height*0.28);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.28,size.width*0.8,size.height*0.28);
-    path0.cubicTo(size.width,size.height*0.28,size.width,size.height*0.42,size.width*0.8,size.height*0.42);
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.8,size.height*0.42);
-
-    path0.quadraticBezierTo(size.width*0.8,size.height*0.42,size.width*0.2,size.height*0.42);
-    //line 3
-    path0.moveTo(size.width*0.2,size.height*0.42);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.42,size.width*0.2,size.height*0.42);
-    path0.cubicTo(0,size.height*0.42,0,size.height*0.56,size.width*0.2,size.height*0.56);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.3,size.height*0.56);
-    path0.quadraticBezierTo(size.width*0.2,size.height*0.56,size.width*0.8,size.height*0.56);
-
-
-    canvas.drawPath(path0, paint);
-
-
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
-    return true;
   }
 }
 

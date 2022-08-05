@@ -19,7 +19,7 @@ class TextContainerLozenge extends StatelessWidget {
         height: size.height * 0.08,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.green,
+          color: Colors.green.withOpacity(0.5),
         ),
         child: RotationTransition(
           turns: const AlwaysStoppedAnimation(-45 / 360),
